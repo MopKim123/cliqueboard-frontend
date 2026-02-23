@@ -74,6 +74,14 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  
+  --color-primary: #F4B400;
+  --color-secondary: #1E3A8A;
+  --color-background: #F9FAFB;
+  --color-surface: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-text: #111827;
+  --color-ring: rgba(30, 58, 138, 0.5);
 }
 
 .dark {
@@ -117,6 +125,7 @@
   body {
     @apply bg-background text-foreground;
   }
+
 }
 
 @layer components {
@@ -134,4 +143,59 @@
   .nav-trigger-transparent {
         @apply bg-transparent hover:bg-transparent data-[state=open]:bg-transparent;
     }
+}
+
+/* Buttons / Backgrounds */
+.btn-primary {
+  @apply bg-[var(--color-primary)] text-[var(--color-surface)];
+}
+.btn-secondary {
+  @apply bg-[var(--color-secondary)] text-[var(--color-surface)];
+}
+.bg-background {
+  @apply bg-[var(--color-background)];
+}
+.bg-surface {
+  @apply bg-[var(--color-surface)];
+}
+
+/* Text colors */
+.text-primary {
+  @apply text-[var(--color-primary)];
+}
+.text-secondary {
+  @apply text-[var(--color-secondary)];
+}
+.text-foreground {
+  @apply text-[var(--color-text)];
+}
+
+/* Borders */
+.border-primary {
+  @apply border-[var(--color-primary)];
+}
+.border-secondary {
+  @apply border-[var(--color-secondary)];
+}
+.border-border {
+  @apply border-[var(--color-border)];
+}
+
+/* Outline / Ring */
+.outline-primary {
+  @apply outline-[var(--color-primary)/50];
+}
+.outline-secondary {
+  @apply outline-[var(--color-secondary)/50];
+}
+.outline-ring {
+  @apply outline-[var(--color-ring)];
+}
+
+/* Example usage for hover states */
+.btn-primary:hover {
+  @apply bg-[var(--color-primary)]/80;
+}
+.btn-secondary:hover {
+  @apply bg-[var(--color-secondary)]/80;
 }

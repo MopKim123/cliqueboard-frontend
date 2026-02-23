@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-muted/40 p-4">
+  <div class="flex min-h-screen items-center justify-center bg-muted/40 pt-14">
     <div class="w-full max-w-sm rounded-lg border bg-card p-6 shadow-sm">
       <h1 class="mb-6 text-2xl font-semibold text-center">Login</h1>
 
