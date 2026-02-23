@@ -1,21 +1,58 @@
+// composables/useApiError.ts
 import { toast } from 'vue-sonner'
 
-export const useApiError = (error: any) => {
-    const message =
-        error?.data?.message ||
-        error?.statusMessage ||
-        'Something went wrong'
+interface ApiErrorShape {
+    status?: number
+    statusMessage?: string
+    data?: {
+        message?: string
+    }
+}
 
-    console.error('API Error:', message)
+export const useApiError = () => {
+    const handleError = (error: unknown): string => {
+        const err = error as ApiErrorShape
 
-    // Optional: global toast
-    if (toast) {
-        toast.error({
+        const message =
+            err?.data?.message ||
+            err?.statusMessage ||
+            'Something went wrong'
+
+        console.error('API Error:', message)
+
+        toast?.error({
             title: 'Error',
             description: message,
-            variant: 'destructive',
         })
+
+        return message
     }
 
-    return message
+    const checkAndHandleFetchError = (
+        error: unknown,
+        method?: string
+    ) => {
+        const err = error as ApiErrorShape
+
+        // Example logic
+        if (err.status === 401) {
+            // unauthorized → maybe redirect to login
+            navigateTo('/login')
+            return
+        }
+
+        if (err.status === 500) {
+            // server error → show toast
+            handleError(err)
+            return
+        }
+
+        // fallback
+        handleError(err)
+    }
+
+    return {
+        handleError,
+        checkAndHandleFetchError
+    }
 }
