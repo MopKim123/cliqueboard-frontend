@@ -7,6 +7,6 @@
 
 <script setup lang="ts">
 definePageMeta({
-  // layout: 'guest',
+  middleware: 'auth',
 })
 </script>

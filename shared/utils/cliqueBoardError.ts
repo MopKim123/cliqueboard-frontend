@@ -7,7 +7,8 @@ interface NormalizedApiError {
 }
 
 export function cliqueBoardError(error: unknown): NormalizedApiError {
-    // If it's a FetchError (Nuxt / ofetch)
+    console.error('Raw error: ', error)
+
     if (typeof error === 'object' && error !== null) {
         const err = error as {
             status?: number
@@ -31,11 +32,22 @@ export function cliqueBoardError(error: unknown): NormalizedApiError {
             err.data ||
             err.response?._data
 
-        const message =
-            (data as { message?: string })?.message ||
-            err.statusMessage ||
-            err.message ||
-            'Something went wrong'
+        // 1️⃣ Backend JSON message (if exists)
+        let message =
+            (data as { message?: string })?.message
+
+        // 2️⃣ If no backend message, map common statuses
+        if (!message) {
+            if (status === 401) message = 'Invalid credentials'
+            else if (status === 403) message = 'Access denied'
+            else if (status === 404) message = 'Resource not found'
+            else if (status === 500) message = 'Server error'
+        }
+
+        // 3️⃣ Final fallback
+        if (!message) {
+            message = 'Something went wrong'
+        }
 
         return {
             status,

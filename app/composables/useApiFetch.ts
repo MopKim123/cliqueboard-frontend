@@ -1,4 +1,3 @@
-// composables/useFetchApi.ts
 import type { UseFetchOptions } from 'nuxt/app'
 
 export function useApiFetch<T>(
@@ -8,17 +7,17 @@ export function useApiFetch<T>(
 ) {
     const { checkAndHandleFetchError } = useApiError()
     const headers = useRequestHeaders(['cookie'])
-    const config = useRuntimeConfig()
 
-    return useFetch<T>(url, {
-        baseURL: config.public.apiBase,
+    return useFetch(url, {
+        baseURL: useRuntimeConfig().public.apiBase,
         credentials: 'include',
-        headers,
+        headers: headers,
         immediate: false,
+        method: options?.method || 'GET',
         watch: false,
         dedupe: 'defer',
-        $fetch: useNuxtApp().$api,
         ...options,
+        $fetch: useNuxtApp().$api,
         onRequestError({ error }) {
             const requestError = cliqueBoardError(error)
             showError({
@@ -28,7 +27,8 @@ export function useApiFetch<T>(
             })
         },
         onResponseError({ response, options: responseOptions }) {
-            const ignoreStatus = [402, 403]
+            const ignoreStatus = [403, 402]
+
             if (showErrorPage && !ignoreStatus.includes(response.status)) {
                 checkAndHandleFetchError(
                     cliqueBoardError(response),
