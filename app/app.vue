@@ -1,7 +1,7 @@
 <template>
   <div>
     <NuxtRouteAnnouncer />
-    <Toaster />
+    <Toaster richColors />
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>
